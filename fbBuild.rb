@@ -24,6 +24,7 @@ class OptionParser
     def self.parse(args)
         options = OpenStruct.new
         options.project = nil
+        options.simulator = nil
 
         opt_parser = OptionParser.new do |opts|
 
@@ -71,7 +72,11 @@ puts "Using project path: " + "#{options.project}".green
 # Xcodeproj::Project::Object::PBXNativeTarget
 xcproj = Xcodeproj::Project.open(options.project)
 puts xcproj.targets
-value = `xcodebuild -showsdks | grep iphonesimulator | tail -n 1`
-puts value
-# wasGood = system( "xcodebuild -showsdks | grep iphonesimulator" )
-# puts wasGood
+simulator = `xcodebuild -showsdks | grep iphonesimulator | tail -n 1`
+if simulator.length > 0 
+    index = simulator.index('iphonesimulator')
+    options.simulator = simulator[index..simulator.length]
+else
+    puts "No ios simulator found"
+end
+puts "Using simulator: " + "#{options.simulator}".green
