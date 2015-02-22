@@ -80,3 +80,10 @@ else
     puts "No ios simulator found"
 end
 puts "Using simulator: " + "#{options.simulator}".green
+
+#start build with xcodebuild
+#Reference : https://developers.facebook.com/docs/ios/creating-ios-simulator-build-for-review
+cmd = `xcodebuild -arch i386 -sdk #{options.simulator}`
+puts cmd
+
+
