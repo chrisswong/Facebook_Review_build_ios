@@ -81,9 +81,31 @@ else
 end
 puts "Using simulator: " + "#{options.simulator}".green
 
+build_dir = Dir.pwd + "/build"
+
+if Dir.exists?(build_dir)
+    # puts build_dir
+    cleanBuildDir = `rm -rf ${build_dir}`
+end
+
+puts build_dir 
+
+
 #start build with xcodebuild
 #Reference : https://developers.facebook.com/docs/ios/creating-ios-simulator-build-for-review
-cmd = `xcodebuild -arch i386 -sdk #{options.simulator}`
+cmd = `xcodebuild -arch i386 -sdk #{options.simulator} OBJROOT="${build_dir}" SYMROOT="${build_dir}"`
 puts cmd
+
+#should get the product name from xcodeproj
+app_path = build_dir + "/Release-iphonesimulator/helloWorld.app"
+puts app_path
+
+zip_cmd = `zip -r helloWorld_fb.app.zip #{app_path}`
+puts zip_cmd
+
+# move_zip_cmd = `mv #{build_dir}/Release-iphonesimulator/helloWorld_fb.zip #{Dir.pwd}`
+
+
+
 
 
